@@ -19,14 +19,14 @@ class AmazonProxy < Rack::Proxy
     headers['Access-Control-Allow-Headers'] = '*'
 
     if body.first.present?
-      ps = AmazonParser.new(body.first)
+      ps = ::AmazonParser.new(body.first)
       body = {
         title: ps.title,
-        rating: ps.average_rating,
-        rank: ps.sales_rank
+        rating: ps.rating,
+        rank: ps.rank
       }.to_json
+      ps.save!
       Rails.logger.info body
-      byebug
     end
     [status, headers, Array(body)]
   end

@@ -10,7 +10,7 @@ class App extends Component {
   componentWillMount() {
   }
   handleBlur = (event) => {
-    fetch("http://localhost:3001/dp/B002QYW8LW", {
+    fetch(`http://localhost:3001/dp/${event.target.value}`, {
         credentials: 'same-origin',
         headers: {
           'Access-Control-Allow-Origin': '*',
