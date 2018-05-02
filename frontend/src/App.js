@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
@@ -9,9 +8,9 @@ class App extends Component {
   }
   componentWillMount() {
   }
-  handleBlur = (event) => {
+  handleClick = (event) => {
     this.setState({...this.state, loading: true})
-    fetch(`http://localhost:3001/dp/${event.target.value}`, {
+    fetch(`http://localhost:3001/dp/${this.state.asin}`, {
         credentials: 'same-origin',
         headers: {
           'Access-Control-Allow-Origin': '*',
@@ -31,23 +30,28 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <label>Enter a product ASIN:</label>
-          <input type="text" value={asin} onChange={this.handleChange} onBlur={this.handleBlur}/>
+          <h1>CheckIt</h1>
+          <h2>Look up Amazon products by ASIN</h2>
         </header>
-        {this.state.loading ? <p> loading {asin} ... </p>
-        : <table>
-          <thead>
-            <tr><th>Title</th><th>Rating</th><th>Rank</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{product.title}</td>
-              <td>{product.rating}</td>
-              <td>{product.rank}</td>
-            </tr>
-          </tbody>
-        </table>
-        }
+        <main>
+          <label for="asin">Enter a product ASIN:</label>
+          <input name="asin" type="text" value={asin} onChange={this.handleChange} />
+          <button onClick={this.handleClick}>CheckIt!</button>
+          {this.state.loading ? <p> loading {asin} ... </p>
+          : <table>
+            <thead>
+              <tr><th>Title</th><th>Rating</th><th>Rank</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{product.title}</td>
+                <td>{product.rating}</td>
+                <td>{product.rank}</td>
+              </tr>
+            </tbody>
+          </table>
+          }
+        </main>
       </div>
     );
   }
