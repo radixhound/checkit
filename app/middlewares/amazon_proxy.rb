@@ -22,8 +22,8 @@ class AmazonProxy < Rack::Proxy
       ps = ::AmazonParser.new(body.first)
       body = {
         title: ps.title,
-        rating: ps.rating,
-        rank: ps.rank
+        rating: ps.rating.to_f,
+        rank: ps.rank.to_i
       }.to_json
       ps.save!
       Rails.logger.info body

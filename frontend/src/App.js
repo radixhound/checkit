@@ -5,21 +5,21 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {asin: "", product: {}};
+    this.state = {asin: "", product: {}, loading: false};
   }
   componentWillMount() {
   }
   handleBlur = (event) => {
+    this.setState({...this.state, loading: true})
     fetch(`http://localhost:3001/dp/${event.target.value}`, {
         credentials: 'same-origin',
         headers: {
           'Access-Control-Allow-Origin': '*',
-          'Accept-Encoding': 'gzip',
+          'Accept-Encoding': 'gzip', // FIXME: solve the gzip issue for moar speed?
          },
         opts: { method: 'GET' } })
     .then((response) => {
-      debugger;
-      response.json().then((json) => this.setState({ asin: this.state.asin, product: json}));
+      response.json().then((json) => this.setState({...this.state, product: json, loading: false}));
     })
     .catch((error) => console.log(error));
   }
@@ -31,9 +31,11 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
+          <label>Enter a product ASIN:</label>
           <input type="text" value={asin} onChange={this.handleChange} onBlur={this.handleBlur}/>
         </header>
-        <table>
+        {this.state.loading ? <p> loading {asin} ... </p>
+        : <table>
           <thead>
             <tr><th>Title</th><th>Rating</th><th>Rank</th></tr>
           </thead>
@@ -45,6 +47,7 @@ class App extends Component {
             </tr>
           </tbody>
         </table>
+        }
       </div>
     );
   }
