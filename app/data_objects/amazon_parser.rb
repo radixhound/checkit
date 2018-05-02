@@ -38,4 +38,12 @@ class AmazonParser
   def star_icon_path
     "//i[contains(@class, 'a-icon-star')]"
   end
+
+  def as_json(options = {})
+    {
+      title: title,
+      rating: rating.to_f,
+      rank: rank.to_i
+    }
+  end
 end
