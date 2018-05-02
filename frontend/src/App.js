@@ -5,9 +5,11 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {asin: "", product: {}};
   }
   componentWillMount() {
+  }
+  handleBlur = (event) => {
     fetch("http://localhost:3001/dp/B002QYW8LW", {
         credentials: 'same-origin',
         headers: {
@@ -15,18 +17,34 @@ class App extends Component {
           'Accept-Encoding': 'gzip',
          },
         opts: { method: 'GET' } })
-    .then((response) => console.log(response));
+    .then((response) => {
+      debugger;
+      response.json().then((json) => this.setState({ asin: this.state.asin, product: json}));
+    })
+    .catch((error) => console.log(error));
+  }
+  handleChange = (event) => {
+    this.setState({asin: event.target.value})
   }
   render() {
+    const { asin, product } = this.state;
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+          <input type="text" value={asin} onChange={this.handleChange} onBlur={this.handleBlur}/>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <table>
+          <thead>
+            <tr><th>Title</th><th>Rating</th><th>Rank</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{product.title}</td>
+              <td>{product.rating}</td>
+              <td>{product.rank}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     );
   }

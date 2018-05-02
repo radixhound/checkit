@@ -20,13 +20,15 @@ class AmazonProxy < Rack::Proxy
 
     if body.first.present?
       ps = AmazonParser.new(body.first)
-      Rails.logger.info "TITLE: " + ps.title
-      Rails.logger.info "Average stars: " + ps.average_rating
-      Rails.logger.info "Average stars: " + ps.sales_rank
+      body = {
+        title: ps.title,
+        rating: ps.average_rating,
+        rank: ps.sales_rank
+      }.to_json
+      Rails.logger.info body
+      byebug
     end
-
-    body = "Got it!" # don't send 1m+ of text back to the client.
-    triplet
+    [status, headers, Array(body)]
   end
 
 end
