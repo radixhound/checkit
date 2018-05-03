@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ProductTable from './ProductTable';
 import './App.css';
 
-
+const HOST = process.env.REACT_APP_HOST || 'http://localhost:3001';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +17,7 @@ class App extends Component {
     this.fetchProducts();
   }
   fetchProducts = () => {
-    fetch(`http://localhost:3001/products`, {
+    fetch(`${HOST}/products`, {
         credentials: 'same-origin',
         opts: { method: 'GET' } })
     .then((response) => {
@@ -30,7 +30,7 @@ class App extends Component {
   }
   handleClick = (event) => {
     this.setState({...this.state, progress_message: `loading ${this.state.asin}...`})
-    fetch(`http://localhost:3001/dp/${this.state.asin}`, {
+    fetch(`${HOST}/dp/${this.state.asin}`, {
         credentials: 'same-origin',
         opts: { method: 'GET' } })
     .then((response) => {
@@ -61,9 +61,11 @@ class App extends Component {
             <input name="asin" type="text" value={asin} onChange={this.handleChange} />
             <button onClick={this.handleClick}>CheckIt!</button>
           </section>
+
           <section className="result_area">
             {this.state.progress_message ? <p> {progress_message} </p> : <ProductTable products={[product]}/>}
           </section>
+
           <section className="previous_results">
             <h3>Previously found products:</h3>
             <ProductTable products={previous_products}/>
