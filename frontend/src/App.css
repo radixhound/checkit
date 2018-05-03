@@ -12,6 +12,7 @@
 .Logo {
   float: left;
   margin-right: 2em;
+  width: 100px;
 }
 
 .App-title {
@@ -33,4 +34,9 @@ section {
 
 .result_area {
   background-color: #DDD;
+}
+
+.button,button,input[type='button'],input[type='reset'],input[type='submit'] {
+  background-color:#1DB100;
+  border:0.1rem solid #1DB100;
 }
