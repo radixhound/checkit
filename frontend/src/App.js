@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ProductTable from './ProductTable';
 import './App.css';
 
-const HOST = process.env.REACT_APP_HOST || 'http://localhost:3001';
+const APP_HOST = process.env.REACT_APP_HOST || 'http://localhost:3001';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +17,7 @@ class App extends Component {
     this.fetchProducts();
   }
   fetchProducts = () => {
-    fetch(`${HOST}/products`, {
+    fetch(`${APP_HOST}/products`, {
         credentials: 'same-origin',
         opts: { method: 'GET' } })
     .then((response) => {
@@ -30,7 +30,7 @@ class App extends Component {
   }
   handleClick = (event) => {
     this.setState({...this.state, progress_message: `loading ${this.state.asin}...`})
-    fetch(`${HOST}/dp/${this.state.asin}`, {
+    fetch(`${APP_HOST}/dp/${this.state.asin}`, {
         credentials: 'same-origin',
         opts: { method: 'GET' } })
     .then((response) => {
