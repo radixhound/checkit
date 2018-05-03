@@ -41,6 +41,7 @@ class AmazonParser
 
   def as_json(options = {})
     {
+      asin: asin,
       title: title,
       rating: rating.to_f,
       rank: rank.to_i
