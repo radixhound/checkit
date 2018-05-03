@@ -6,13 +6,14 @@ const ProductRow = ({product}) => (
     <td>{product.title}</td>
     <td>{product.rating}</td>
     <td>{product.rank}</td>
+    <td>{product.asin}</td>
   </tr>
 );
 
 const ProductTable = ({products}) => (
   <table>
     <thead>
-      <tr><th>Title</th><th>Rating</th><th>Rank</th></tr>
+      <tr><th>Title</th><th>Rating</th><th>Rank</th><th>ASIN</th></tr>
     </thead>
     <tbody>
       {products.map((product, i) => <ProductRow key={i} product={product}/>)}
@@ -77,9 +78,12 @@ class App extends Component {
             <label htmlFor="asin">Enter a product ASIN:</label>
             <input name="asin" type="text" value={asin} onChange={this.handleChange} />
             <button onClick={this.handleClick}>CheckIt!</button>
+          </section>
+          <section className="result_area">
             {this.state.loading ? <p> loading {asin} ... </p> : <ProductTable products={[product]}/>}
           </section>
           <section className="previous_results">
+            <h3>Previously found products:</h3>
             <ProductTable products={previous_products}/>
           </section>
         </main>

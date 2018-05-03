@@ -27,6 +27,10 @@
   to { transform: rotate(360deg); }
 }
 
-main {
+section {
   padding: 2em;
+}
+
+.result_area {
+  background-color: #DDD;
 }

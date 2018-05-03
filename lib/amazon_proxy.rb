@@ -5,7 +5,6 @@ class AmazonProxy < Rack::Proxy
     request = Rack::Request.new(env)
 
     if request.path =~ %r{^/dp}
-      Rails.logger.info "we is special!!"
       env["HTTP_HOST"] = "www.amazon.com"
       @process_response = true
       super(env)
