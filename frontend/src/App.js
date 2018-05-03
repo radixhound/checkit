@@ -28,7 +28,7 @@ class App extends Component {
       asin: "",
       product: {},
       previous_products: [],
-      loading: false
+      progress_message: false
     };
   }
   componentWillMount() {
@@ -42,12 +42,12 @@ class App extends Component {
          },
         opts: { method: 'GET' } })
     .then((response) => {
-      response.json().then((json) => this.setState({ ...this.state, previous_products: json }));
+        response.json().then((json) => this.setState({ ...this.state, previous_products: json }));
     })
     .catch((error) => console.log(error));
   }
   handleClick = (event) => {
-    this.setState({...this.state, loading: true})
+    this.setState({...this.state, progress_message: `loading ${this.state.asin}...`})
     fetch(`http://localhost:3001/dp/${this.state.asin}`, {
         credentials: 'same-origin',
         headers: {
@@ -56,7 +56,11 @@ class App extends Component {
          },
         opts: { method: 'GET' } })
     .then((response) => {
-      response.json().then((json) => this.setState({...this.state, product: json, loading: false}));
+      if (response.status === 200) {
+        response.json().then((json) => this.setState({...this.state, product: json, progress_message: false}));
+      } else {
+        this.setState({...this.state, progress_message: "Could not locate product :-("})
+      }
     })
     .then(this.fetchProducts)
     .catch((error) => console.log(error));
@@ -65,7 +69,7 @@ class App extends Component {
     this.setState({asin: event.target.value})
   }
   render() {
-    const { asin, product, previous_products } = this.state;
+    const { asin, product, previous_products, progress_message } = this.state;
     return (
       <div className="App">
         <header className="App-header">
@@ -80,7 +84,7 @@ class App extends Component {
             <button onClick={this.handleClick}>CheckIt!</button>
           </section>
           <section className="result_area">
-            {this.state.loading ? <p> loading {asin} ... </p> : <ProductTable products={[product]}/>}
+            {this.state.progress_message ? <p> {progress_message} </p> : <ProductTable products={[product]}/>}
           </section>
           <section className="previous_results">
             <h3>Previously found products:</h3>
